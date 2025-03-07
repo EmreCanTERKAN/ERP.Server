@@ -1,4 +1,5 @@
-﻿using ERP.Server.Application.Employees;
+﻿using ERP.Server.Application.Customers;
+using ERP.Server.Application.Employees;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -19,6 +20,7 @@ public class AppODataController(
         ODataConventionModelBuilder builder = new();
         builder.EnableLowerCamelCase();
         builder.EntitySet<EmployeeGetAllQueryResponse>("employees");
+        builder.EntitySet<CustomersGetAllQueryResponse>("customers");
         return builder.GetEdmModel();
     }
 
@@ -28,4 +30,13 @@ public class AppODataController(
         var response = await sender.Send(new EmployeeGetAllQuery(), cancellationToken);
         return response;
     }
+
+    [HttpGet("customers")]
+    public async Task<IQueryable<CustomersGetAllQueryResponse>> GetAllCustomers(CancellationToken cancellationToken)
+    {
+        var response = await sender.Send(new CustomersGetAllQuery(), cancellationToken);
+        return response;
+    }
+
+
 }

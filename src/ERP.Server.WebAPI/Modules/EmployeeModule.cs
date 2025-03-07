@@ -1,4 +1,6 @@
-﻿using ERP.Server.Application.Employees;
+﻿using ERP.Server.Application.Customers;
+using ERP.Server.Application.Employees;
+using ERP.Server.Domain.Customers;
 using ERP.Server.Domain.Employees;
 using MediatR;
 using TS.Result;
@@ -28,3 +30,5 @@ public static class EmployeeModule
             .Produces<Result<Employee>>();
     }
 }
+
+
