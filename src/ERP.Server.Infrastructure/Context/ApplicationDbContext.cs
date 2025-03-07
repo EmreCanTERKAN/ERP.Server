@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using ERP.Server.Domain.Abstractions;
+using ERP.Server.Domain.Customers;
 using ERP.Server.Domain.Employees;
 using ERP.Server.Domain.Users;
 using GenericRepository;
@@ -16,6 +17,7 @@ internal sealed class ApplicationDbContext : IdentityDbContext<AppUser, Identity
     }
 
     public DbSet<Employee> Employees { get; set; }
+    public DbSet<Customer> Customers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

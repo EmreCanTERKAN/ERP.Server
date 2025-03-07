@@ -1,5 +1,6 @@
 ﻿using ERP.Server.Application.Services;
 using ERP.Server.Domain.Users;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -58,5 +59,17 @@ internal sealed class LoginCommandHandler(
         };
 
         return response;
+    }
+}
+
+public sealed class LoginCommandValidator : AbstractValidator<LoginCommand>
+{
+    public LoginCommandValidator()
+    {
+        RuleFor(p => p.UserNameOrEmail).MinimumLength(3)
+            .WithMessage("Kullanıcı adı ya da mail bilgisi en az 3 karakter olmalıdır");
+        RuleFor(p => p.Password)
+            .MinimumLength(1)
+            .WithMessage("Şifre en az 1 karakter olmalıdır");
     }
 }
