@@ -18,32 +18,32 @@ public static class DepotModule
             .Produces<Result<List<Customer>>>()
             .WithName("GetAllDepots");
 
-        //group.MapPost("create",
-        //    async (ISender sender, CreateCustomerCommand request, CancellationToken cancellationToken) =>
-        //    {
-        //        var response = await sender.Send(request, cancellationToken);
-        //        return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
-        //    })
-        //    .Produces<Result<string>>()
-        //    .WithName("CreateCustomer");
+        group.MapPost("create",
+            async (ISender sender, CreateDepotCommand request, CancellationToken cancellationToken) =>
+            {
+                var response = await sender.Send(request, cancellationToken);
+                return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
+            })
+            .Produces<Result<string>>()
+            .WithName("CreateDepot");
 
-        //group.MapPost("deleteById",
-        //    async (ISender sender, DeleteCustomerCommand request, CancellationToken cancellationToken) =>
-        //    {
-        //        var response = await sender.Send(request, cancellationToken);
-        //        return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
-        //    })
-        //    .Produces<Result<string>>()
-        //    .WithName("DeleteCustomer");
+        group.MapPost("deleteById",
+            async (ISender sender, DeleteDepotCommand request, CancellationToken cancellationToken) =>
+            {
+                var response = await sender.Send(request, cancellationToken);
+                return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
+            })
+            .Produces<Result<string>>()
+            .WithName("DeleteDepot");
 
-        //group.MapPost("update",
-        //    async (ISender sender, UpdateCustomerCommand
-        //    request, CancellationToken cancellationToken) =>
-        //    {
-        //        var response = await sender.Send(request, cancellationToken);
-        //        return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
-        //    })
-        //    .Produces<Result<string>>()
-        //    .WithName("UpdateCustomer");
+        group.MapPost("update",
+            async (ISender sender, UpdateDepotCommand
+            request, CancellationToken cancellationToken) =>
+            {
+                var response = await sender.Send(request, cancellationToken);
+                return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
+            })
+            .Produces<Result<string>>()
+            .WithName("UpdateDepot");
     }
 }
