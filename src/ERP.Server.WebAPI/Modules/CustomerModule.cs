@@ -26,5 +26,14 @@ public static class CustomerModule
             })
             .Produces<Result<string>>()
             .WithName("CreateCustomer");
+
+        group.MapPost("deleteById",
+            async (ISender sender, DeleteCustomerCommand request, CancellationToken     cancellationToken)  =>
+            {
+                var response = await sender.Send(request, cancellationToken);
+                return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
+            })
+            .Produces<Result<string>>()
+            .WithName("DeleteCustomer");
     }
 }
