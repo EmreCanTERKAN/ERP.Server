@@ -1,4 +1,5 @@
 ﻿using ERP.Server.Domain.Customers;
+using ERP.Server.Domain.Depots;
 using ERP.Server.Domain.Users;
 using GenericRepository;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,7 @@ internal sealed class ApplicationDbContext : IdentityDbContext<AppUser, Identity
     }
 
     public DbSet<Customer> Customers { get; set; }
+    public DbSet<Depot> Depots { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
