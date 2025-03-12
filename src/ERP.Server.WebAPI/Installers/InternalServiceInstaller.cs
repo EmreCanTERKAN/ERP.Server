@@ -1,4 +1,3 @@
-
 using ERP.Server.Application;
 using ERP.Server.Infrastructure;
 
@@ -12,8 +11,6 @@ public static class InternalServiceInstaller
         services.AddInfrastructure(configuration);
         services.AddCors();
         services.AddExceptionHandler<ExceptionHandler>().AddProblemDetails();
-        //services.AddKeycloakWebApiAuthentication(builder.Configuration);
-        //services.AddAuthorization().AddKeycloakAuthorization(builder.Configuration);
         return services;
     }
 }

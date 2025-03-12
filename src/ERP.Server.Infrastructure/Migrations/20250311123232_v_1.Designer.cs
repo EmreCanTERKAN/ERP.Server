@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Server.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250202175721_mg1")]
-    partial class mg1
+    [Migration("20250311123232_v_1")]
+    partial class v_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,50 +25,31 @@ namespace ERP.Server.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ERP.Server.Domain.Employees.Employee", b =>
+            modelBuilder.Entity("ERP.Server.Domain.Customers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateOnly>("BirthOfDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTimeOffset>("CreateAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid>("CreateUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("DeleteAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("DeleteUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("money");
+                    b.Property<string>("TaxDepartment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("UpdateAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("UpdateUserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TaxNumber")
+                        .IsRequired()
+                        .HasColumnType("varchar(11)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("ERP.Server.Domain.Users.AppUser", b =>
@@ -177,71 +158,34 @@ namespace ERP.Server.Infrastructure.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("ERP.Server.Domain.Employees.Employee", b =>
+            modelBuilder.Entity("ERP.Server.Domain.Customers.Customer", b =>
                 {
-                    b.OwnsOne("ERP.Server.Domain.Employees.Address", "Address", b1 =>
+                    b.OwnsOne("ERP.Server.Domain.Customers.Address", "Address", b1 =>
                         {
-                            b1.Property<Guid>("EmployeeId")
+                            b1.Property<Guid>("CustomerId")
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("City")
                                 .HasColumnType("nvarchar(max)")
                                 .HasColumnName("City");
 
-                            b1.Property<string>("Country")
+                            b1.Property<string>("FullAddress")
                                 .HasColumnType("nvarchar(max)")
-                                .HasColumnName("Country");
-
-                            b1.Property<string>("FulLAddress")
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("FulLAddress");
+                                .HasColumnName("FullAddress");
 
                             b1.Property<string>("Town")
                                 .HasColumnType("nvarchar(max)")
                                 .HasColumnName("Town");
 
-                            b1.HasKey("EmployeeId");
+                            b1.HasKey("CustomerId");
 
-                            b1.ToTable("Employees");
-
-                            b1.WithOwner()
-                                .HasForeignKey("EmployeeId");
-                        });
-
-                    b.OwnsOne("ERP.Server.Domain.Employees.PersonelInformation", "PersonelInformation", b1 =>
-                        {
-                            b1.Property<Guid>("EmployeeId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Email")
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("Email");
-
-                            b1.Property<string>("Phone1")
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("Phone1");
-
-                            b1.Property<string>("Phone2")
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("Phone2");
-
-                            b1.Property<string>("TCNo")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("TCNO");
-
-                            b1.HasKey("EmployeeId");
-
-                            b1.ToTable("Employees");
+                            b1.ToTable("Customers");
 
                             b1.WithOwner()
-                                .HasForeignKey("EmployeeId");
+                                .HasForeignKey("CustomerId");
                         });
 
                     b.Navigation("Address")
-                        .IsRequired();
-
-                    b.Navigation("PersonelInformation")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

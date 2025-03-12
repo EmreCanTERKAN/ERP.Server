@@ -39,10 +39,8 @@ public static class InfrastructureRegistrar
 
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
         services.ConfigureOptions<JwtOptionsSetup>();
-        services.Configure<KeycloakConfiguration>(configuration.GetSection("KeycloakConfiguration"));
 
-        services.AddScoped<KeycloakService>();
-        //services.AddScoped<IJwtProvider, KeycloakService>();           
+    
 
         services.Scan(opt => opt
         .FromAssemblies(typeof(InfrastructureRegistrar).Assembly)

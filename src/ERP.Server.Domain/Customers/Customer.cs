@@ -1,4 +1,5 @@
-﻿using ERP.Server.Domain.Abstractions;
+﻿
+using ERPServer.Domain.Abstractions;
 
 namespace ERP.Server.Domain.Customers;
 

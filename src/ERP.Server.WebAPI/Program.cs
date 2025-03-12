@@ -1,4 +1,3 @@
-using ERP.Server.WebAPI;
 using ERP.Server.WebAPI.Installers;
 using ERP.Server.WebAPI.Modules;
 using Scalar.AspNetCore;

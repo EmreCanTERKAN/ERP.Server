@@ -15,7 +15,7 @@ public static class ExtensionsMiddleware
             {
                 AppUser user = new()
                 {
-                    // Id = Guid.Parse("e4931370-d0aa-47fc-8af4-11a4cbc7732b"),
+                    Id = Guid.Parse("e4931370-d0aa-47fc-8af4-11a4cbc7732b"),
                     UserName = "admin",
                     Email = "admin@admin.com",
                     FirstName = "EmreCan",
