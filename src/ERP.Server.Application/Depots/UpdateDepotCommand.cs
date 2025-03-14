@@ -40,10 +40,10 @@ internal sealed class UpdateDepotCommandHandler(
 
         if (depot.Name != request.Name)
         {
-            bool isTaxNumberExists = await depotRepository.AnyAsync(p => p.Name == request.Name, cancellationToken);
+            bool isNameExists = await depotRepository.AnyAsync(p => p.Name == request.Name, cancellationToken);
 
-            if (isTaxNumberExists)
-                return Result<string>.Failure("Bu vergi numarası ile daha önce kayıt oluşturulmuş");
+            if (isNameExists)
+                return Result<string>.Failure("Bu depo ile daha önce kayıt oluşturulmuş.");
         }
 
         request.Adapt(depot);

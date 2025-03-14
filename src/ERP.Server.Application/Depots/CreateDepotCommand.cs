@@ -33,9 +33,9 @@ internal sealed class CreateDepotCommandHandler(
 {
     public async Task<Result<string>> Handle(CreateDepotCommand request, CancellationToken cancellationToken)
     {
-        bool isTaxNumberExists = await depotRepository.AnyAsync(p => p.Name == request.Name, cancellationToken);
+        bool isNameExists = await depotRepository.AnyAsync(p => p.Name == request.Name, cancellationToken);
 
-        if (isTaxNumberExists)
+        if (isNameExists)
             return Result<string>.Failure("Bu depo daha önce oluşturulmuş");
 
         Depot depot = request.Adapt<Depot>();

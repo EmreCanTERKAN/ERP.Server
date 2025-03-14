@@ -1,5 +1,4 @@
-﻿using ERP.Server.Domain.Customers;
-using ERP.Server.Domain.Depots;
+﻿using ERP.Server.Domain.Depots;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TS.Result;
