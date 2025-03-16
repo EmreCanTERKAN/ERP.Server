@@ -1,4 +1,5 @@
-﻿using ERP.Server.Application.Recipes;
+﻿using ERP.Server.Application.RecipeDetails;
+using ERP.Server.Application.Recipes;
 using ERP.Server.Domain.Recipes;
 using MediatR;
 using TS.Result;
@@ -35,6 +36,7 @@ public static class RecipeModule
             })
             .Produces<Result<string>>()
             .WithName("DeleteRecipe");
+
 
     }
 }
