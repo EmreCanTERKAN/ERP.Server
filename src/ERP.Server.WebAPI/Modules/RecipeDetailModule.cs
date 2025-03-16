@@ -35,14 +35,14 @@ public static class RecipeDetailModule
             .Produces<Result<string>>()
             .WithName("UpdateRecipeDetail");
 
-        group.MapPost("getByIdRecieWithDetails",
+        group.MapPost("getByIdRecipeWithDetails",
             async (ISender sender, GetByIdRecipeWithDetailsQuery request, CancellationToken cancellationToken)  =>
             {
                 var response = await sender.Send(request, cancellationToken);
                 return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
             })
             .Produces<Result<string>>()
-            .WithName("GetByIdRecieWithDetails");
+            .WithName("GetByIdRecipeWithDetails");
 
     }
 }

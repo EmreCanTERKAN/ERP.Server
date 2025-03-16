@@ -6,7 +6,7 @@ using TS.Result;
 namespace ERP.Server.Application.RecipeDetails;
 
 public sealed record GetByIdRecipeWithDetailsQuery(
-    Guid Id) : IRequest<Result<Recipe>>;
+    Guid RecipeId) : IRequest<Result<Recipe>>;
 
 internal sealed class GetByIdRecipeWithDetailsQueryHandler(
     IRecipeRepository recipeRepository) : IRequestHandler<GetByIdRecipeWithDetailsQuery, Result<Recipe>>
@@ -14,9 +14,9 @@ internal sealed class GetByIdRecipeWithDetailsQueryHandler(
     public async Task<Result<Recipe>> Handle(GetByIdRecipeWithDetailsQuery request, CancellationToken cancellationToken)
     {
         Recipe? recipe = await recipeRepository
-            .Where(p => p.Id == request.Id)
+            .Where(p => p.Id == request.RecipeId)
             .Include(p => p.Product)
-            .Include(p => p.Details!)
+            .Include(p => p.Details!.OrderBy(p => p.Product!.Name))
             .ThenInclude(p => p.Product)
             .FirstOrDefaultAsync(cancellationToken);
 
