@@ -5,6 +5,7 @@ using ERP.Server.Domain.Orders;
 using ERP.Server.Domain.Products;
 using ERP.Server.Domain.RecipeDetails;
 using ERP.Server.Domain.Recipes;
+using ERP.Server.Domain.StockMovement;
 using ERP.Server.Domain.Users;
 using GenericRepository;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,7 @@ internal sealed class ApplicationDbContext : IdentityDbContext<AppUser, Identity
     public DbSet<RecipeDetail> RecipeDetails { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<StockMovement> StockMovements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -4,6 +4,7 @@ using ERP.Server.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ERP.Server.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250317112026_refactor_order_ordernumber_nvarchar16")]
+    partial class refactor_order_ordernumber_nvarchar16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,6 +94,37 @@ namespace ERP.Server.Infrastructure.Migrations
                     b.ToTable("OrderDetails");
                 });
 
+            modelBuilder.Entity("ERP.Server.Domain.Orders.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DeliveryDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderNumberYear")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("ERP.Server.Domain.Products.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -147,34 +181,6 @@ namespace ERP.Server.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Recipes");
-                });
-
-            modelBuilder.Entity("ERP.Server.Domain.StockMovement.StockMovement", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DepotId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("NumberOfEntries")
-                        .HasColumnType("decimal(7,2)");
-
-                    b.Property<decimal>("NumberOfOutputs")
-                        .HasColumnType("decimal(7,2)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("money");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("StockMovements");
                 });
 
             modelBuilder.Entity("ERP.Server.Domain.Users.AppUser", b =>
@@ -283,37 +289,6 @@ namespace ERP.Server.Infrastructure.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("DeliveryDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("OrderNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderNumberYear")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("ERP.Server.Domain.Customers.Customer", b =>
                 {
                     b.OwnsOne("ERP.Server.Domain.Customers.Address", "Address", b1 =>
@@ -378,7 +353,7 @@ namespace ERP.Server.Infrastructure.Migrations
 
             modelBuilder.Entity("ERP.Server.Domain.OrderDetails.OrderDetail", b =>
                 {
-                    b.HasOne("Order", null)
+                    b.HasOne("ERP.Server.Domain.Orders.Order", null)
                         .WithMany("Details")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -391,6 +366,17 @@ namespace ERP.Server.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ERP.Server.Domain.Orders.Order", b =>
+                {
+                    b.HasOne("ERP.Server.Domain.Customers.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("ERP.Server.Domain.RecipeDetails.RecipeDetail", b =>
@@ -421,34 +407,12 @@ namespace ERP.Server.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ERP.Server.Domain.StockMovement.StockMovement", b =>
-                {
-                    b.HasOne("ERP.Server.Domain.Products.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Order", b =>
-                {
-                    b.HasOne("ERP.Server.Domain.Customers.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("ERP.Server.Domain.Recipes.Recipe", b =>
+            modelBuilder.Entity("ERP.Server.Domain.Orders.Order", b =>
                 {
                     b.Navigation("Details");
                 });
 
-            modelBuilder.Entity("Order", b =>
+            modelBuilder.Entity("ERP.Server.Domain.Recipes.Recipe", b =>
                 {
                     b.Navigation("Details");
                 });
