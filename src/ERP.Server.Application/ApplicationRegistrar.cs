@@ -1,6 +1,9 @@
 ﻿using ERP.Server.Application.Behaviors;
 using FluentValidation;
+using Mapster;
+using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace ERP.Server.Application;
 public static class ApplicationRegistrar
@@ -14,6 +17,11 @@ public static class ApplicationRegistrar
         });
 
         services.AddValidatorsFromAssembly(typeof(ApplicationRegistrar).Assembly);
+
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(Assembly.GetExecutingAssembly());
+
+        services.AddSingleton(config);
 
         return services;
     }
