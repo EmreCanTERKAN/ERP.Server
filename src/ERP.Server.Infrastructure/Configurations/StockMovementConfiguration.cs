@@ -11,6 +11,5 @@ internal sealed class StockMovementConfiguration : IEntityTypeConfiguration<Stoc
         builder.Property(p => p.NumberOfEntries).HasColumnType("decimal(7,2)");
         builder.Property(p => p.NumberOfOutputs).HasColumnType("decimal(7,2)");
         builder.Property(p => p.Price).HasColumnType("money");
-
     }
 }
