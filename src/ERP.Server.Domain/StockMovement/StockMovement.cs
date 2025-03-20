@@ -1,5 +1,4 @@
-﻿using ERP.Server.Domain.Depots;
-using ERP.Server.Domain.Products;
+﻿using ERP.Server.Domain.Products;
 using ERPServer.Domain.Abstractions;
 
 namespace ERP.Server.Domain.StockMovement;
@@ -12,4 +11,6 @@ public sealed class StockMovement : Entity
     public decimal NumberOfEntries { get; set; }
     public decimal NumberOfOutputs { get; set; }
     public decimal Price { get; set; }
+    public Guid? InvoiceId { get; set; }
+    public Invoice? Invoice { get; set; }
 }

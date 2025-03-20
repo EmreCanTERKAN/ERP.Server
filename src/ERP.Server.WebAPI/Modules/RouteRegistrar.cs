@@ -11,5 +11,6 @@ public static class RouteRegistrar
         app.RegisterRecipeRoutes();
         app.RegisterRecipeDetailRoutes();
         app.RegisterOrderRoutes();
+        app.RegisterInvoiceRoutes();
     }
 }

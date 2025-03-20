@@ -1,16 +1,16 @@
-﻿using ERP.Server.Domain.OrderDetails;
+﻿using ERP.Server.Domain.InvoiceDetails;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ERP.Server.Infrastructure.Configurations;
 
-internal sealed class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
+internal sealed class InvoiceDetailConfiguration : IEntityTypeConfiguration<InvoiceDetail>
 {
-    public void Configure(EntityTypeBuilder<OrderDetail> builder)
+    public void Configure(EntityTypeBuilder<InvoiceDetail> builder)
     {
         builder.HasOne(p => p.Product)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
+           .WithMany()
+           .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(p => p.Price).HasColumnType("money");
         builder.Property(p => p.Quantity).HasColumnType("decimal(7,2)");

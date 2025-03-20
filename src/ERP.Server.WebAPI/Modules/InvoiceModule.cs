@@ -1,49 +1,48 @@
-﻿using ERP.Server.Application.Depots;
-using ERP.Server.Domain.Customers;
+﻿using ERP.Server.Application.Invoices;
 using MediatR;
 using TS.Result;
 
-public static class DepotModule
+public static class InvoiceModule
 {
-    public static void RegisterInvoiceRoutes(this IEndpointRouteBuilder app)
+    public static void RegisterDepotRoutes(this IEndpointRouteBuilder app)
     {
-        RouteGroupBuilder group = app.MapGroup("/depot").WithTags("Depot");
+        RouteGroupBuilder group = app.MapGroup("/invoice").WithTags("Invoice");
 
         group.MapPost("getAll",
-            async (ISender sender, CancellationToken cancellationToken) =>
+            async (GetAllInvoiceQuery request,ISender sender, CancellationToken cancellationToken) =>
             {
-                var response = await sender.Send(new GetAllDepotQuery(), cancellationToken);
+                var response = await sender.Send(request, cancellationToken);
                 return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
             })
-            .Produces<Result<List<Customer>>>()
-            .WithName("GetAllDepots");
+            .Produces<Result<List<Invoice>>>()
+            .WithName("GetAllInvoice");
 
         group.MapPost("create",
-            async (ISender sender, CreateDepotCommand request, CancellationToken cancellationToken) =>
+            async (ISender sender, CreateInvoiceCommand request, CancellationToken cancellationToken) =>
             {
                 var response = await sender.Send(request, cancellationToken);
                 return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
             })
             .Produces<Result<string>>()
-            .WithName("CreateDepot");
+            .WithName("CreateInvoice");
 
         group.MapPost("deleteById",
-            async (ISender sender, DeleteDepotCommand request, CancellationToken cancellationToken) =>
+            async (ISender sender, DeleteInvoiceByIdCommand request, CancellationToken cancellationToken) =>
             {
                 var response = await sender.Send(request, cancellationToken);
                 return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
             })
             .Produces<Result<string>>()
-            .WithName("DeleteDepot");
+            .WithName("DeleteInvoiceById");
 
         group.MapPost("update",
-            async (ISender sender, UpdateDepotCommand
+            async (ISender sender, UpdateInvoiceCommand
             request, CancellationToken cancellationToken) =>
             {
                 var response = await sender.Send(request, cancellationToken);
                 return response.IsSuccessful ? Results.Ok(response) : Results.InternalServerError(response);
             })
             .Produces<Result<string>>()
-            .WithName("UpdateDepot");
+            .WithName("UpdateInvoice");
     }
 }
