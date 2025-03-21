@@ -18,11 +18,15 @@ public sealed record UpdateInvoiceCommand(
 internal sealed class UpdateInvoiceCommandHandler(
     IInvoiceRepository invoiceRepository,
     IStockMovementRepository stockMovementRepository,
+    IInvoiceDetailRepository invoiceDetailRepository,
     IUnitOfWork unitOfWork) : IRequestHandler<UpdateInvoiceCommand, Result<string>>
 {
     public async Task<Result<string>> Handle(UpdateInvoiceCommand request, CancellationToken cancellationToken)
     {
-        var invoice = await invoiceRepository.GetByExpressionWithTrackingAsync(p => p.Id == request.Id, cancellationToken);
+        var invoice = await invoiceRepository
+            .WhereWithTracking(p => p.Id == request.Id)
+            .Include(p => p.Details)
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (invoice is null)
         {
@@ -34,6 +38,7 @@ internal sealed class UpdateInvoiceCommandHandler(
                     .ToListAsync(cancellationToken);
 
         stockMovementRepository.DeleteRange(movements);
+        invoiceDetailRepository.DeleteRange(invoice.Details);
 
         invoice.CustomerId = request.CustomerId;
         invoice.Type = InvoiceTypeEnum.FromValue(request.TypeValue);
@@ -48,6 +53,17 @@ internal sealed class UpdateInvoiceCommandHandler(
             Quantity = d.Quantity,
             Price = d.Price
         }));
+
+        invoice.Details = [.. request.Details.Select(s => new InvoiceDetail
+        {
+            InvoiceId = invoice.Id,
+            DepotId = s.DepotId,
+            ProductId = s.ProductId,
+            Price = s.Price,
+            Quantity = s.Quantity
+        })];
+
+        await invoiceDetailRepository.AddRangeAsync(invoice.Details, cancellationToken);
 
         List<StockMovement> newMovements = new();
 
@@ -65,6 +81,7 @@ internal sealed class UpdateInvoiceCommandHandler(
 
             newMovements.Add(movement);
         }
+
         await stockMovementRepository.AddRangeAsync(newMovements, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);

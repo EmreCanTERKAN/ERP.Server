@@ -55,7 +55,7 @@ internal sealed class CreateInvoiceCommandHandler(
             {
                 StockMovement movement = new()
                 {
-                    InvoiceId = item.InvoiceId,
+                    InvoiceId = invoice.Id,
                     NumberOfEntries = request.TypeValue == 1 ? item.Quantity : 0,
                     NumberOfOutputs = request.TypeValue == 2 ? item.Quantity : 0,
                     DepotId = item.DepotId,

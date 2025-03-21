@@ -1,7 +1,7 @@
 ﻿using ERP.Server.Domain.Customers;
 using ERP.Server.Domain.Depots;
 using ERP.Server.Domain.OrderDetails;
-using ERP.Server.Domain.Orders;
+using ERP.Server.Domain.Productions;
 using ERP.Server.Domain.Products;
 using ERP.Server.Domain.RecipeDetails;
 using ERP.Server.Domain.Recipes;
@@ -27,6 +27,7 @@ internal sealed class ApplicationDbContext : IdentityDbContext<AppUser, Identity
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<StockMovement> StockMovements { get; set; }
+    public DbSet<Production> Productions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

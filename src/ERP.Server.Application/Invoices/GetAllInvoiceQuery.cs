@@ -15,6 +15,12 @@ internal sealed class GetAllInvoiceQueryHandler(
         List<Invoice> invoices = await invoiceRepository
             .Where(p => p.Type == InvoiceTypeEnum.FromValue(request.Type))
             .OrderBy(p => p.Date)
+            .Include(p => p.Customer)
+            .Include(p => p.Details!)
+                .ThenInclude(d => d.Product)
+            .Include(p => p.Details!)
+                .ThenInclude(d => d.Depot)
+            .AsSplitQuery() 
             .ToListAsync(cancellationToken);
 
         return invoices;
