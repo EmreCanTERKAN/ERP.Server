@@ -13,6 +13,8 @@ internal sealed class GetAllProductionQueryHandler(
     {
         var productions = await productionRepository
             .GetAll()
+            .Include(p => p.Product)
+            .Include(p => p.Depot)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync(cancellationToken);
         return productions;

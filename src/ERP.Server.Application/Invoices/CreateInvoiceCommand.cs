@@ -1,5 +1,6 @@
 ﻿using ERP.Server.Domain.Enums;
 using ERP.Server.Domain.InvoiceDetails;
+using ERP.Server.Domain.Orders;
 using ERP.Server.Domain.StockMovement;
 using GenericRepository;
 using MediatR;
@@ -11,7 +12,8 @@ public sealed record CreateInvoiceCommand(
     int TypeValue,
     DateOnly Date,
     string InvoiceNumber,
-    List<InvoiceDetailDto> Details) : IRequest<Result<string>>;
+    List<InvoiceDetailDto> Details,
+    Guid? OrderId) : IRequest<Result<string>>;
 
 
 public sealed record InvoiceDetailDto(
@@ -23,6 +25,7 @@ public sealed record InvoiceDetailDto(
 internal sealed class CreateInvoiceCommandHandler(
     IInvoiceRepository invoiceRepository,
     IStockMovementRepository stockMovementRepository,
+    IOrderRepository orderRepository,
     IUnitOfWork unitOfWork) : IRequestHandler<CreateInvoiceCommand, Result<string>>
 {
     public async Task<Result<string>> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
@@ -69,6 +72,18 @@ internal sealed class CreateInvoiceCommandHandler(
         }
 
         await invoiceRepository.AddAsync(invoice, cancellationToken);
+
+        if(request.OrderId is not null)
+        {
+            Order order = await orderRepository
+                .GetByExpressionWithTrackingAsync(p => p.Id == request.OrderId, cancellationToken);
+
+            if(order is not null)
+            {
+                order.Status = OrderStatusEnum.Completed;
+            }
+        }
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return "Fatura başarıyla oluşturuldu";

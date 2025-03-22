@@ -1,5 +1,6 @@
 ﻿using ERP.Server.Domain.Enums;
 using ERP.Server.Domain.InvoiceDetails;
+using ERP.Server.Domain.Orders;
 using ERP.Server.Domain.StockMovement;
 using GenericRepository;
 using MediatR;
@@ -9,8 +10,6 @@ using TS.Result;
 namespace ERP.Server.Application.Invoices;
 public sealed record UpdateInvoiceCommand(
     Guid Id,
-    Guid CustomerId,
-    int TypeValue,
     DateOnly Date,
     string InvoiceNumber,
     List<InvoiceDetailDto> Details) : IRequest<Result<string>>;
@@ -40,8 +39,7 @@ internal sealed class UpdateInvoiceCommandHandler(
         stockMovementRepository.DeleteRange(movements);
         invoiceDetailRepository.DeleteRange(invoice.Details);
 
-        invoice.CustomerId = request.CustomerId;
-        invoice.Type = InvoiceTypeEnum.FromValue(request.TypeValue);
+
         invoice.Date = request.Date;
         invoice.InvoiceNumber = request.InvoiceNumber;
 
@@ -72,8 +70,6 @@ internal sealed class UpdateInvoiceCommandHandler(
             StockMovement movement = new()
             {
                 InvoiceId = invoice.Id,
-                NumberOfEntries = request.TypeValue == 1 ? item.Quantity : 0,
-                NumberOfOutputs = request.TypeValue == 2 ? item.Quantity : 0,
                 DepotId = item.DepotId,
                 Price = item.Price,
                 ProductId = item.ProductId
@@ -83,6 +79,7 @@ internal sealed class UpdateInvoiceCommandHandler(
         }
 
         await stockMovementRepository.AddRangeAsync(newMovements, cancellationToken);
+
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

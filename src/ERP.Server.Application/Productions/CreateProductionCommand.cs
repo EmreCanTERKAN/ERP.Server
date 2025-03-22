@@ -2,7 +2,6 @@
 using ERP.Server.Domain.Recipes;
 using ERP.Server.Domain.StockMovement;
 using GenericRepository;
-using MapsterMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TS.Result;
@@ -26,7 +25,7 @@ internal sealed class CreateProductionCommandHandler(
             ProductId = request.ProductId,
             DepotId = request.DepotId,
             Quantity = request.Quantity,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.Now
         };
 
         List<StockMovement> newMovements = new();
